@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Management - Gau Shala OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="animated-bg"></div>
+
+    <div id="login-view" class="view-container active">
+        <div class="login-split-card glass-panel">
+            <div class="login-image">
+                <div class="image-overlay">
+                    <h2>Pure Water, Healthy Herd</h2>
+                    <p>IoT Driven Resource Management</p>
+                </div>
+            </div>
+            <div class="login-form">
+                <div class="login-header">
+                    <h2>💧 Water management</h2>
+                    <p class="institute">Dayalbagh Educational Institute</p>
+                    <span class="badge ok">Admin Portal</span>
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-user"></i> Admin ID</label>
+                    <input type="text" id="username" placeholder="Enter ID" value="admin" class="glass-input">
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-lock"></i> Password</label>
+                    <input type="password" id="password" placeholder="Enter Password" value="1234" class="glass-input">
+                </div>
+                <button id="login-btn" class="btn btn-colorful full-width">Access System <i class="fa-solid fa-arrow-right"></i></button>
+                <div class="login-footer">
+                    <p>Developed by Shivam</p>
+                    <p class="sub-text">Shivam</p>
+                    <p class="sub-text">shivamyadav2403198@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-app-view" class="view-container" style="display: none;">
+        
+        <nav class="sidebar glass-panel">
+            <div class="sidebar-brand">
+                <h2>Smart Water Manager</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item active" data-target="dashboard-section"><i class="fa-solid fa-chart-pie pastel-blue-text"></i> Dashboard</li>
+                <li class="nav-item" data-target="sensor-section"><i class="fa-solid fa-microchip pastel-orange-text"></i> Hardware Status</li>
+                <li class="nav-item" data-target="analytics-section"><i class="fa-solid fa-chart-line pastel-purple-text"></i> Deep Analytics</li>
+                <li class="nav-item" data-target="info-section"><i class="fa-solid fa-circle-info pastel-green-text"></i> Gau Shala Info</li>
+            </ul>
+            <div class="nav-bottom">
+                <button id="logout-btn" class="btn-outline"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="glass-panel top-header">
+                <div>
+                    <h1 id="page-title">Dashboard</h1>
+                    <p><i class="fa-solid fa-wifi" style="color:#00b894;"></i> System Online & Connected</p>
+                </div>
+                <div class="user-profile">
+                    <div class="text-right">
+                        <span style="display:block; font-weight:600;">Shivam Yadav</span>
+                        <span style="font-size:0.8rem; color:var(--text-muted);">Lead Admin</span>
+                    </div>
+                    <div class="avatar-img">SY</div>
+                </div>
+            </header>
+
+            <section id="dashboard-section" class="app-section active fade-in">
+                <div class="metrics-grid">
+                    <div class="card glass-panel border-blue">
+                        <h3><i class="fa-solid fa-water pastel-blue-text"></i> Main Tank Level</h3>
+                        <div class="tank-visual"><div class="water-waves" id="water-level-fill"></div><span id="water-level-text" class="glass-text">75%</span></div>
+                    </div>
+                    <div class="card glass-panel border-green">
+                        <h3><i class="fa-solid fa-flask pastel-green-text"></i> Real-time Purity</h3>
+                        <div class="metric-group">
+                            <div><span class="label">pH Level</span><h2 id="ph-val" class="pastel-green-text">7.2</h2></div>
+                            <div><span class="label">TDS (PPM)</span><h2 id="tds-val" class="pastel-blue-text">150</h2></div>
+                        </div>
+                    </div>
+                    <div class="card glass-panel border-purple">
+                        <h3><i class="fa-solid fa-faucet-drip pastel-purple-text"></i> Daily Consumption</h3>
+                        <h2 id="consumption-val" class="pastel-purple-text">1,240 L</h2>
+                        <div class="progress-bar glass-track"><div class="progress-fill bg-purple" style="width: 62%;"></div></div>
+                        <p class="sub-text text-right" style="margin-top:5px;">Quota: 2,000 L</p>
+                    </div>
+                </div>
+                
+                <div class="charts-grid" style="margin-top: 25px;">
+                    <div class="chart-card glass-panel chart-container">
+                        <h3>Water Distribution by Shed</h3>
+                        <canvas id="doughnutChart"></canvas>
+                    </div>
+                    <div class="card glass-panel">
+                        <h3>📋 Live System Alerts</h3>
+                        <div class="alerts-container" id="alerts-log">
+                            <div class="alert-item"><span class="badge ok">SYS</span> Boot sequence complete.</div>
+                            <div class="alert-item"><span class="badge info">NET</span> ESP32 connected to cloud.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sensor-section" class="app-section fade-in" style="display: none;">
+                <h2 style="margin-bottom: 20px;">Active IoT Sensor Array</h2>
+                <div class="metrics-grid">
+                    <div class="card glass-panel">
+                        <h3><i class="fa-solid fa-satellite-dish"></i> ESP32 Microcontroller</h3>
+                        <p class="sensor-status active-glow">Status: <strong>Online</strong></p>
+                        <p class="sub-text">Ping: 24ms | Uptime: 14 days</p>
+                    </div>
+                    <div class="card glass-panel">
+                        <h3><i class="fa-solid fa-ruler-vertical"></i> Ultrasonic (HC-SR04)</h3>
+                        <p class="sensor-status active-glow">Status: <strong>Measuring</strong></p>
+                        <p class="sub-text">Tank Depth Mapping Active</p>
+                    </div>
+                    <div class="card glass-panel">
+                        <h3><i class="fa-solid fa-vial"></i> Analog pH Sensor</h3>
+                        <p class="sensor-status active-glow">Status: <strong>Calibrated</strong></p>
+                        <p class="sub-text">Last Calibration: 2 hours ago</p>
+                    </div>
+                    <div class="card glass-panel">
+                        <h3><i class="fa-solid fa-droplet"></i> Flow Meter (YF-S201)</h3>
+                        <p class="sensor-status active-glow">Status: <strong>Tracking</strong></p>
+                        <p class="sub-text">Flow Rate: 12 L/min</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="analytics-section" class="app-section fade-in" style="display: none;">
+                <div class="charts-grid">
+                    <div class="chart-card glass-panel chart-container">
+                        <h3>Water Quality Profile (Radar)</h3>
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                    <div class="chart-card glass-panel chart-container">
+                        <h3>Consumption vs Temperature</h3>
+                        <canvas id="mixedChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card glass-panel chart-container" style="margin-top: 25px;">
+                    <h3>7-Day pH & TDS Variance Trend</h3>
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </section>
+
+            <section id="info-section" class="app-section fade-in" style="display: none;">
+                <div class="card glass-panel" style="margin-bottom: 25px;">
+                    <h2 class="pastel-blue-text">About Our Gau Shala Initiative</h2>
+                    <p style="line-height: 1.8;">Water is the most critical nutrient for dairy cattle, accounting for 87% of milk composition. The <strong>Smart Water Management System</strong> system was deployed to ensure zero water scarcity and prevent waterborne diseases among our indigenous breeds. By automating the pump and monitoring Total Dissolved Solids (TDS), we reduce manual labor while maximizing herd health.</p>
+                </div>
+                
+                <div class="metrics-grid">
+                    <div class="card glass-panel">
+                        <h3><i class="fa-solid fa-clipboard-list"></i> Daily Water Requirements</h3>
+                        <ul style="text-align: left; line-height: 1.8; margin-top: 15px;">
+                            <li><strong>Lactating Cows:</strong> 100 - 150 Liters/day</li>
+                            <li><strong>Dry Cows:</strong> 50 - 70 Liters/day</li>
+                            <li><strong>Calves:</strong> 20 - 30 Liters/day</li>
+                            <li class="pastel-orange-text"><strong>Summer Spike:</strong> Needs increase by 30%</li>
+                        </ul>
+                    </div>
+                    <div class="card glass-panel">
+                        <h3><i class="fa-solid fa-shield-cat"></i> Target Water Standards</h3>
+                        <ul style="text-align: left; line-height: 1.8; margin-top: 15px;">
+                            <li><strong>Optimal pH:</strong> 6.5 to 7.5 (Prevents acidosis)</li>
+                            <li><strong>TDS Limit:</strong> Less than 500 PPM</li>
+                            <li><strong>Coliform:</strong> 0 CFU/100ml</li>
+                            <li><strong>Temperature:</strong> 15°C to 25°C</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
